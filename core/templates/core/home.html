@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block javascript %}
+  <script>
+    $(".change-fav").click(function () {
+      
+      var nombre_pelicula = $(this).val()
+      var button = $("span", this)
+
+      $.ajax({
+            url:'/ajax/change-fav',
+            data: {
+                'pelicula': nombre_pelicula
+            },
+             dataType: 'json',
+            success: function (data) {
+                if ( !data.is_fav ) {
+                    button.text('No Fav') 
+                } else {
+                    button.text('Fav') 
+
+                }
+
+        }
+      })
+
+
+
+    });
+
+  </script>
+{% endblock %}
+
+{% block content %}
+
+    <h1>Peliculas</h1>
+
+    {% for pelicula in peliculas %}
+        <p>{{ pelicula.nombre }}</p>      
+        <button class="change-fav" value="{{pelicula.nombre}}">
+        <span>
+            {% if pelicula.favorita  %}
+            Fav
+            {% else %}
+            No Fav
+            {% endif %}
+        <span>
+        </button>
+    {% endfor %}
+{% endblock %}
+
